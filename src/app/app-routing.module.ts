@@ -8,14 +8,14 @@ import { Grafica1Component } from './pages/grafica1/grafica1.component';
 import { NotpagefoundComponent } from './pages/notpagefound/notpagefound.component';
 import { PagesComponent } from './pages/pages.component';
 import { PagesRoutingModule } from './pages/pages.routing';
+import { AuthRoutingModule } from './auth/auth.routing';
 
 const routes:Routes = [
   
   
 
 
-  {path:'login',component:LoginComponent},
-  {path:'register',component:RegisterComponent},
+  
   
   
   {path:'**', component:NotpagefoundComponent}
@@ -26,7 +26,8 @@ const routes:Routes = [
   declarations: [],
   imports: [
     RouterModule.forRoot(routes),
-    PagesRoutingModule
+    PagesRoutingModule,
+    AuthRoutingModule
   ],
   exports:[
     RouterModule
