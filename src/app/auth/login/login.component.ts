@@ -17,8 +17,8 @@ export class LoginComponent  {
     private service:UsuarioService) { }
   public  formSubmited = false
 public loginForm:FormGroup= this.fb.group({
-  email:['test100@gmail.com',[Validators.required,Validators.email]],
-  password:['1234567', Validators.required],
+  email:[localStorage.getItem('email') || '',[Validators.required,Validators.email]],
+  password:['', Validators.required],
   remember:[false]
  
 
@@ -33,7 +33,11 @@ public loginForm:FormGroup= this.fb.group({
     }else{
       this.service.loginUsuario(this.loginForm.value)
     .subscribe(created =>{
-      console.log('usuario logeado')
+      if(this.loginForm.get('remember')?.value){
+        localStorage.setItem('email',this.loginForm.get('email')?.value)
+      }else{
+        localStorage.removeItem('email')
+      }
       console.log(created)
     },(err) => {
       Swal.fire('Error',err.error.msg,'error');
