@@ -30,4 +30,13 @@ export class UsuarioService {
        })
      )
    }
+
+   loginGoogle(token:any){
+    return this.http.post(`${url}/login/google`,{token})
+     .pipe(
+       tap( (resp:any) =>{
+         localStorage.setItem('token',resp.token)
+       })
+     )
+   }
 }

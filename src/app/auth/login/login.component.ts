@@ -1,3 +1,4 @@
+import { tokenize } from '@angular/compiler/src/ml_parser/lexer';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -11,7 +12,8 @@ declare const gapi:any;
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-
+  public  formSubmited = false;
+  public auth2:any;
   constructor(private router:Router,
     private fb:FormBuilder,
     private service:UsuarioService) { }
@@ -20,7 +22,7 @@ export class LoginComponent implements OnInit {
     this.renderButton();
   }
 
-  public  formSubmited = false
+  
 public loginForm:FormGroup= this.fb.group({
   email:[localStorage.getItem('email') || '',[Validators.required,Validators.email]],
   password:['', Validators.required],
@@ -52,15 +54,7 @@ public loginForm:FormGroup= this.fb.group({
     
   }
 
-   onSuccess(googleUser:any) {
-    // console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
-    var id_token = googleUser.getAuthResponse().id_token;
-    console.log(id_token )
-  }
-
-  onFailure(error:any) {
-    console.log(error);
-  }
+   
     renderButton() {
       gapi.signin2.render('my-signin2', {
         'scope': 'profile email',
@@ -68,9 +62,35 @@ public loginForm:FormGroup= this.fb.group({
         'height': 50,
         'longtitle': true,
         'theme': 'dark',
-        'onsuccess': this.onSuccess,
-        'onfailure': this.onFailure
+        
       });
+      this.startApp()
     }
+
+     startApp() {
+      gapi.load('auth2', () => {
+        // Retrieve the singleton for the GoogleAuth library and set up the client.
+        this.auth2 = gapi.auth2.init({
+          client_id: '330823192387-b1t83i154bpp2tl4um9f6aa4b7ilfcor.apps.googleusercontent.com',
+          cookiepolicy: 'single_host_origin',
+          // Request scopes in addition to 'profile' and 'email'
+          //scope: 'additional_scope'
+        });
+        this.attachSignin(document.getElementById('my-signin2'));
+      });
+    };
+
+    attachSignin(element:any) {
+      
+      this.auth2.attachClickHandler(element, {},
+          (googleUser:any) => {
+             var id_token = googleUser.getAuthResponse().id_token;
+            this.service.loginGoogle(id_token).subscribe()
+
+          }, (error:any) => {
+            alert(JSON.stringify(error, undefined, 2));
+          });
+    }
+
 
 }
