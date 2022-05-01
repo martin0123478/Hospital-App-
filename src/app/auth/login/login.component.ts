@@ -45,7 +45,7 @@ public loginForm:FormGroup= this.fb.group({
       }else{
         localStorage.removeItem('email')
       }
-      console.log(created)
+      this.router.navigateByUrl('/')
     },(err) => {
       Swal.fire('Error',err.error.msg,'error');
     })
@@ -85,8 +85,10 @@ public loginForm:FormGroup= this.fb.group({
       this.auth2.attachClickHandler(element, {},
           (googleUser:any) => {
              var id_token = googleUser.getAuthResponse().id_token;
-            this.service.loginGoogle(id_token).subscribe()
+            this.service.loginGoogle(id_token).subscribe(resp =>{
+              this.router.navigateByUrl('/')
 
+            })
           }, (error:any) => {
             alert(JSON.stringify(error, undefined, 2));
           });
