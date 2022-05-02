@@ -1,5 +1,5 @@
 import { tokenize } from '@angular/compiler/src/ml_parser/lexer';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UsuarioService } from 'src/app/services/usuario.service';
@@ -16,7 +16,8 @@ export class LoginComponent implements OnInit {
   public auth2:any;
   constructor(private router:Router,
     private fb:FormBuilder,
-    private service:UsuarioService) { }
+    private service:UsuarioService,
+    private ngZone:NgZone) { }
 
   ngOnInit(): void {
     this.renderButton();
@@ -86,7 +87,10 @@ public loginForm:FormGroup= this.fb.group({
           (googleUser:any) => {
              var id_token = googleUser.getAuthResponse().id_token;
             this.service.loginGoogle(id_token).subscribe(resp =>{
-              this.router.navigateByUrl('/')
+              this.ngZone.run(()=>{
+                this.router.navigateByUrl('/')
+
+              })
 
             })
           }, (error:any) => {
