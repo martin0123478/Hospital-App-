@@ -14,7 +14,7 @@ declare const gapi:any;
 })
 export class UsuarioService {
   private auth2:any;
-  public user:Usuario;
+  public user:Usuario | undefined;
  
 
   constructor(private http:HttpClient,
@@ -63,7 +63,7 @@ export class UsuarioService {
           uid
         } = resp.usuario
         this.user = new Usuario(nombre,email,'',img,google,role,uid);
-        this.user.imprimirUsuario();
+     
         localStorage.setItem('token',resp.token)
       }),
       map(resp =>true),
