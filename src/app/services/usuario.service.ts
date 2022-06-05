@@ -52,21 +52,22 @@ export class UsuarioService {
         'x-token':token
       }
     }).pipe(
-      tap( (resp:any) =>{
+      map( (resp:any) =>{
         
         const{
           email,
           google,
           nombre,
           role,
-          img,
+          img='',
           uid
         } = resp.usuario
         this.user = new Usuario(nombre,email,'',img,google,role,uid);
      
         localStorage.setItem('token',resp.token)
+        return true;
       }),
-      map(resp =>true),
+      
       catchError( error => of(false))
     );
   }
