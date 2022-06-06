@@ -5,13 +5,17 @@
         <div class="card-body">
             <h4 class="card-title">Mi perfil de Usuario</h4>
             <h6 class="card-subtitle">Ajustes..</h6>
-            <form class="form-horizontal p-t-20">
+            <form class="form-horizontal p-t-20" [formGroup]="perfilForm"
+            (ngSubmit)="actualizarPerfil()">
                 <div class="form-group row">
                     <label for="exampleInputuname3" class="col-sm-3 control-label">Username*</label>
                     <div class="col-sm-9">
                         <div class="input-group">
                             <div class="input-group-addon"><i class="ti-user"></i></div>
-                            <input type="text" class="form-control" id="exampleInputuname3" placeholder="Username">
+                            <input type="text" class="form-control" 
+                            id="exampleInputuname3" 
+                            placeholder="Nombre del usuario"
+                            formControlName="nombre">
                         </div>
                     </div>
                 </div>
@@ -20,7 +24,11 @@
                     <div class="col-sm-9">
                         <div class="input-group">
                             <div class="input-group-addon"><i class="ti-email"></i></div>
-                            <input type="email" class="form-control" id="exampleInputEmail3" placeholder="Enter email">
+                            <input type="email" 
+                            class="form-control"
+                             id="exampleInputEmail3" 
+                             placeholder=" email del Usuario"
+                             formControlName="email">
                         </div>
                     </div>
                 </div>
